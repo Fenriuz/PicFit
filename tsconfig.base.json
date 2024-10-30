@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@pic-fit/api/core/feature": ["libs/api/core/src/index.ts"],
       "@pic-fit/api/images/feature": ["libs/api/images/feature/src/index.ts"]
     }
   },
