@@ -1,5 +1,5 @@
 export default {
-  displayName: 'images',
+  displayName: 'api-images-data-access',
   preset: '../../../../jest.preset.js',
   testEnvironment: 'node',
   transform: {

@@ -1,9 +1,9 @@
 {
-  "name": "images",
+  "name": "api-images-feature",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/api/images/feature/src",
   "projectType": "library",
   "tags": [],
-  "// targets": "to see all targets run: nx show project images --web",
+  "// targets": "to see all targets run: nx show project api-images-feature --web",
   "targets": {}
 }
