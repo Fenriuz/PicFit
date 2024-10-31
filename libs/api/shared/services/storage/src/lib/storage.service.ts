@@ -6,7 +6,6 @@ import {
   DeleteObjectCommand,
   HeadObjectCommand,
   ListObjectsV2Command,
-  ListObjectsV2CommandOutput,
   S3ServiceException,
   DeleteObjectCommandOutput,
 } from '@aws-sdk/client-s3';
@@ -18,6 +17,7 @@ import {
   UploadFileParams,
   KeyParam,
   GetFileResponse,
+  ListFilesResponse,
 } from './storage.service.type';
 
 @Injectable()
@@ -53,7 +53,7 @@ export class StorageService implements IStorageService {
     return await this.s3Client.send(command);
   }
 
-  async getAllFiles(options?: GetAllFilesOptions): Promise<ListObjectsV2CommandOutput> {
+  async getAllFiles(options?: GetAllFilesOptions): Promise<ListFilesResponse> {
     const { prefix, startAfter, maxKeys } = options ?? {};
     const command = new ListObjectsV2Command({
       Bucket: this.bucket,
