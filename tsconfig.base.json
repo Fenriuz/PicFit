@@ -17,7 +17,8 @@
     "paths": {
       "@pic-fit/api/core/feature": ["libs/api/core/src/index.ts"],
       "@pic-fit/api/images/data-access": ["libs/api/images/data-access/src/index.ts"],
-      "@pic-fit/api/images/feature": ["libs/api/images/feature/src/index.ts"]
+      "@pic-fit/api/images/feature": ["libs/api/images/feature/src/index.ts"],
+      "@pic-fit/api/shared/types": ["libs/api/shared/types/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
