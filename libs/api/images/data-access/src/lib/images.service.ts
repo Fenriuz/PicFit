@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Multer } from 'multer';
 import sharp from 'sharp';
 import { StorageService } from './storage.service';
 

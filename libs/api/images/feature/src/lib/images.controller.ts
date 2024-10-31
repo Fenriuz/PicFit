@@ -15,6 +15,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ImagesService } from '@pic-fit/api/images/data-access';
+import { MulterFile } from '@pic-fit/api/shared/types';
 
 @Controller('images')
 export class ImagesController {
@@ -36,7 +37,7 @@ export class ImagesController {
         ],
       }),
     )
-    file: Express.Multer.File,
+    file: MulterFile,
   ) {
     const uploadedImage = await this.imageService.uploadImage(file.buffer, file.originalname);
     return uploadedImage;

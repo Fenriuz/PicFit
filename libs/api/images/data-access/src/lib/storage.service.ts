@@ -12,10 +12,11 @@ import {
   DeleteObjectCommandOutput,
 } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
+import { ConfigVariables } from '@pic-fit/api/shared/types';
 
 @Injectable()
 export class StorageService {
-  constructor(private configService: ConfigService<{ awsImagesBucketName: string }>) {
+  constructor(private configService: ConfigService<ConfigVariables>) {
     this.s3Client = new S3Client();
     this.bucket = this.configService.getOrThrow('awsImagesBucketName');
   }
