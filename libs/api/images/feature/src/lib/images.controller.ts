@@ -39,8 +39,7 @@ export class ImagesController {
     )
     file: MulterFile,
   ) {
-    const uploadedImage = await this.imageService.uploadImage({ image: file.buffer, filename: file.originalname });
-    return uploadedImage;
+    return this.imageService.uploadImage({ image: file.buffer, filename: file.originalname });
   }
 
   @Get(':dimensions/:filename')
@@ -72,7 +71,7 @@ export class ImagesController {
   }
 
   @Delete(':key')
-  async deleteImage(@Param('key') key: string) {
-    return this.imageService.deleteImage({ key });
+  deleteImage(@Param('key') key: string) {
+    this.imageService.deleteImage({ key });
   }
 }

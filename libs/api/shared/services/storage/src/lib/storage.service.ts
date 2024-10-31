@@ -7,13 +7,18 @@ import {
   HeadObjectCommand,
   ListObjectsV2Command,
   ListObjectsV2CommandOutput,
-  GetObjectCommandOutput,
   S3ServiceException,
   DeleteObjectCommandOutput,
 } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 import { ConfigVariables } from '@pic-fit/api/shared/types';
-import { IStorageService, GetAllFilesOptions, UploadFileParams, KeyParam } from './storage.service.type';
+import {
+  IStorageService,
+  GetAllFilesOptions,
+  UploadFileParams,
+  KeyParam,
+  GetFileResponse,
+} from './storage.service.type';
 
 @Injectable()
 export class StorageService implements IStorageService {
@@ -38,7 +43,7 @@ export class StorageService implements IStorageService {
     return key;
   }
 
-  async getFile(params: KeyParam): Promise<GetObjectCommandOutput> {
+  async getFile(params: KeyParam): Promise<GetFileResponse> {
     const { key } = params;
     const command = new GetObjectCommand({
       Bucket: this.bucket,

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import sharp from 'sharp';
+import sharp = require('sharp');
+
 import { StorageService } from '@pic-fit/api/shared/services/storage';
 import {
   GetOriginalImagesParams,
@@ -56,7 +57,9 @@ export class ImagesService implements IImagesService {
     if (!exists) {
       const originalImage = await this.getOriginalImage({ key });
       const bufferOriginalImage = await originalImage.Body?.transformToByteArray();
-      const resizedImage = await sharp(bufferOriginalImage).resize(width, height).toBuffer();
+      const image = sharp(bufferOriginalImage);
+
+      const resizedImage = await image.resize(width, height).toBuffer();
 
       await this.storageService.uploadFile({ key: fullKey, body: resizedImage });
     }
