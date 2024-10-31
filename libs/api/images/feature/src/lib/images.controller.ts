@@ -1,0 +1,77 @@
+import {
+  Controller,
+  Get,
+  Post,
+  Param,
+  UploadedFile,
+  UseInterceptors,
+  ParseFilePipe,
+  MaxFileSizeValidator,
+  FileTypeValidator,
+  NotFoundException,
+  Delete,
+  StreamableFile,
+  Query,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ImagesService } from '@pic-fit/api/images/data-access';
+import { MulterFile } from '@pic-fit/api/shared/types';
+
+@Controller('images')
+export class ImagesController {
+  constructor(private readonly imageService: ImagesService) {}
+
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadImage(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({
+            maxSize: 0.2 * 1024 * 1024, // 200KB in bytes
+            message: (maxSize) => `File size is too large. Max size is ${maxSize / 1024 / 1024} MB`,
+          }),
+          new FileTypeValidator({
+            fileType: /(image\/jpeg|image\/png|image\/webp)/,
+          }),
+        ],
+      }),
+    )
+    file: MulterFile,
+  ) {
+    return this.imageService.uploadImage({ image: file.buffer, filename: file.originalname });
+  }
+
+  @Get(':dimensions/:filename')
+  async getResizedImage(@Param('dimensions') dimensions: string, @Param('filename') filename: string) {
+    const [width, height] = dimensions.split('x').map(Number);
+    const image = await this.imageService.getResizedImage({ key: filename, width, height });
+
+    const byteArray = await image.Body?.transformToByteArray();
+    if (!byteArray) {
+      throw new NotFoundException('Image not found');
+    }
+
+    return new StreamableFile(byteArray);
+  }
+  @Get(':key')
+  async getImage(@Param('key') key: string) {
+    const image = await this.imageService.getOriginalImage({ key });
+    const byteArray = await image.Body?.transformToByteArray();
+    if (!byteArray) {
+      throw new NotFoundException('Image not found');
+    }
+
+    return new StreamableFile(byteArray);
+  }
+
+  @Get('')
+  async getOriginalImages(@Query('lastKey') lastKey?: string, @Query('limit') limit = '12') {
+    return this.imageService.getOriginalImages({ lastKey, limit: parseInt(limit) });
+  }
+
+  @Delete(':key')
+  deleteImage(@Param('key') key: string) {
+    this.imageService.deleteImage({ key });
+  }
+}
