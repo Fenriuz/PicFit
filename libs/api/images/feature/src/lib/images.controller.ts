@@ -39,14 +39,14 @@ export class ImagesController {
     )
     file: MulterFile,
   ) {
-    const uploadedImage = await this.imageService.uploadImage(file.buffer, file.originalname);
+    const uploadedImage = await this.imageService.uploadImage({ image: file.buffer, filename: file.originalname });
     return uploadedImage;
   }
 
   @Get(':dimensions/:filename')
   async getResizedImage(@Param('dimensions') dimensions: string, @Param('filename') filename: string) {
     const [width, height] = dimensions.split('x').map(Number);
-    const image = await this.imageService.getResizedImage(filename, width, height);
+    const image = await this.imageService.getResizedImage({ key: filename, width, height });
 
     const byteArray = await image.Body?.transformToByteArray();
     if (!byteArray) {
@@ -57,7 +57,7 @@ export class ImagesController {
   }
   @Get(':key')
   async getImage(@Param('key') key: string) {
-    const image = await this.imageService.getOriginalImage(key);
+    const image = await this.imageService.getOriginalImage({ key });
     const byteArray = await image.Body?.transformToByteArray();
     if (!byteArray) {
       throw new NotFoundException('Image not found');
@@ -68,11 +68,11 @@ export class ImagesController {
 
   @Get('')
   async getOriginalImages(@Query('lastKey') lastKey?: string, @Query('limit') limit = '12') {
-    return this.imageService.getOriginalImages(lastKey, parseInt(limit));
+    return this.imageService.getOriginalImages({ lastKey, limit: parseInt(limit) });
   }
 
   @Delete(':key')
   async deleteImage(@Param('key') key: string) {
-    return this.imageService.deleteImage(key);
+    return this.imageService.deleteImage({ key });
   }
 }

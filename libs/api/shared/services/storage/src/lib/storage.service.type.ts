@@ -10,10 +10,10 @@ export interface UploadFileParams extends KeyParam {
 
 export interface IStorageService {
   uploadFile(params: UploadFileParams): Promise<string>;
-  getFile(params: KeyParam): Promise<GetObjectCommandOutput>;
-  getAllFiles(params?: GetAllFilesOptions): Promise<ListObjectsV2CommandOutput>;
+  getFile(params: KeyParam): Promise<GetFileResponse>;
+  getAllFiles(params?: GetAllFilesOptions): Promise<ListFilesResponse>;
   fileExists(params: KeyParam): Promise<boolean>;
-  deleteFile(params: KeyParam): Promise<DeleteObjectCommandOutput>;
+  deleteFile(params: KeyParam): Promise<DeleteFileResponse>;
 }
 
 export interface GetAllFilesOptions {
@@ -23,3 +23,7 @@ export interface GetAllFilesOptions {
 
   maxKeys?: number;
 }
+
+export type GetFileResponse = GetObjectCommandOutput;
+export type DeleteFileResponse = DeleteObjectCommandOutput;
+export type ListFilesResponse = ListObjectsV2CommandOutput;
