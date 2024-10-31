@@ -55,6 +55,8 @@
     "@types/multer": "^1.4.12",
     "@types/node": "18.16.9",
     "@types/react": "~18.2.45",
+    "aws-sdk-client-mock": "^4.1.0",
+    "aws-sdk-client-mock-jest": "^4.1.0",
     "babel-jest": "^29.7.0",
     "babel-preset-expo": "~11.0.0",
     "eslint": "^9.8.0",

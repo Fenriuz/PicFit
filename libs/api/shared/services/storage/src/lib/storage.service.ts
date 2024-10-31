@@ -58,7 +58,7 @@ export class StorageService implements IStorageService {
     const command = new ListObjectsV2Command({
       Bucket: this.bucket,
       Prefix: prefix,
-      StartAfter: startAfter ? `images/original/${startAfter}` : undefined,
+      StartAfter: startAfter,
       MaxKeys: maxKeys,
     });
 
