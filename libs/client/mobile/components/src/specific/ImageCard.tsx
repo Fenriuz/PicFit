@@ -1,13 +1,15 @@
 import React from 'react';
 import { View, Image, Text, StyleSheet, Pressable, useWindowDimensions } from 'react-native';
 import { Image as ImageType } from '@pic-fit/api/shared/types';
-import { IMAGE_BASE_URL } from '@pic-fit/client/mobile/utils/constants';
 
 interface ImageCardProps {
   image: ImageType;
   onPress?: () => void;
   index: number;
 }
+
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL;
+const IMAGE_BASE_URL = `${API_BASE_URL}/images`;
 
 export const ImageCard: React.FC<ImageCardProps> = ({ image, onPress, index }) => {
   const { width } = useWindowDimensions();

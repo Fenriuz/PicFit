@@ -3,13 +3,15 @@ import { Modal, View, TouchableOpacity, StyleSheet, Dimensions } from 'react-nat
 import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
 import { Image as ImageType } from '@pic-fit/api/shared/types';
-import { IMAGE_BASE_URL } from '@pic-fit/client/mobile/utils/constants';
 
 interface ImageModalProps {
   image: ImageType | null;
   visible: boolean;
   onClose: () => void;
 }
+
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL;
+const IMAGE_BASE_URL = `${API_BASE_URL}/images`;
 
 export const ImageModal: React.FC<ImageModalProps> = ({ image, visible, onClose }) => {
   if (!image) return null;

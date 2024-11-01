@@ -1,4 +1,3 @@
-import { API_BASE_URL } from '@pic-fit/client/mobile/utils/constants';
 import { Image } from '@pic-fit/api/shared/types';
 
 interface ImagesResponse {
@@ -6,6 +5,8 @@ interface ImagesResponse {
   hasMore: boolean;
   lastKey: string;
 }
+
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL;
 
 export class ImageService {
   static async getImages(lastKey?: string): Promise<ImagesResponse> {
@@ -17,6 +18,7 @@ export class ImageService {
 
       const data = await response.json();
 
+      console.log(data);
       if (!response.ok) {
         throw new Error(data.message);
       }
