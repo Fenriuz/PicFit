@@ -12,6 +12,7 @@ resource "aws_iam_openid_connect_provider" "github" {
   tags = merge(
     var.tags,
     {
+      Environment = "${var.environment}"
       Name = "GitHub-OIDC-Provider"
     }
   )
@@ -48,6 +49,7 @@ resource "aws_iam_role" "github_actions" {
   tags = merge(
     var.tags,
     {
+      Environment = "${var.environment}"
       Name = "GitHub-Actions-Role"
     }
   )
