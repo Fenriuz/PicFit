@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - develop
-      - deploy
     paths:
       - 'apps/backend/**'
       - 'libs/api/**'
@@ -27,12 +26,6 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
 
-    #   - name: Download build artifact
-    #     uses: actions/download-artifact@v4
-    #     with:
-    #       name: backend-dist
-    #       path: dist/apps/backend
-
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
@@ -46,9 +39,3 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest . --target runner-backend
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
-
-      # - name: Update ECS service
-      #   run: |
-      #     aws ecs update-service --cluster ${{ vars.ECS_CLUSTER }} \
-      #       --service ${{ vars.ECS_SERVICE }} \
-      #       --force-new-deployment 
