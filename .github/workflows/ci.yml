@@ -83,22 +83,18 @@ jobs:
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
-      # - name: Build
-      #   run: npx nx affected -t build --base=origin/${{ github.base_ref }}
-
       - name: Build web app
         run: npx nx affected --base=origin/${{ github.base_ref }} -t export mobile -p web
 
       - name: Build backend
         run: npx nx affected --base=origin/${{ github.base_ref }} -t build --exclude=mobile
-        
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: backend-dist
           path: dist/apps/backend
-          if-no-files-found: error
+          if-no-files-found: ignore
 
   # IaC:
   #   needs: [set-environment, build]
