@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react';
 import { View, ActivityIndicator, FlatList, useWindowDimensions, StyleSheet, Animated } from 'react-native';
-import { useImages, useImageUpload } from '../hooks/useImages';
-import { ImageCard } from '../components/specific/ImageCard';
-import { ErrorView } from '../components/common/ErrorView';
-import { UploadArea } from '../components/specific/UploadArea';
-import { ImageModal } from '../components/specific/ImageModal';
-import { Image as ImageType } from '../types/image';
+import { useImages, useImageUpload } from '@pic-fit/client/mobile/hooks';
+import { ImageCard } from '../specific/ImageCard';
+import { ErrorView } from '../common/ErrorView';
+import { UploadArea } from '../specific/UploadArea';
+import { ImageModal } from '../specific/ImageModal';
+import { Image as ImageType } from '@pic-fit/api/shared/types';
 
 export const ImagesListScreen: React.FC = () => {
   const { width } = useWindowDimensions();

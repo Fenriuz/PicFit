@@ -2,8 +2,8 @@ import React from 'react';
 import { Modal, View, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
-import { Image as ImageType } from '../../types/image';
-import { IMAGE_BASE_URL } from '../../constants/config';
+import { Image as ImageType } from '@pic-fit/api/shared/types';
+import { IMAGE_BASE_URL } from '@pic-fit/client/mobile/utils/constants';
 
 interface ImageModalProps {
   image: ImageType | null;

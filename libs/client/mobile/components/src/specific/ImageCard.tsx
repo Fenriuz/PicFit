@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Image, Text, StyleSheet, Pressable, useWindowDimensions } from 'react-native';
-import { Image as ImageType } from '../../types/image';
-import { IMAGE_BASE_URL } from '../../constants/config';
+import { Image as ImageType } from '@pic-fit/api/shared/types';
+import { IMAGE_BASE_URL } from '@pic-fit/client/mobile/utils/constants';
 
 interface ImageCardProps {
   image: ImageType;
