@@ -36,7 +36,8 @@ jobs:
         run: |
           npx nx run-many -t test --configuration=ci --coverage
 
-  deploy:
+  upload-artifacts:
+    needs: [test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -66,7 +67,26 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY_FRONTEND }}
           IMAGE_TAG: ${{ github.sha }}
+          EXPO_PUBLIC_API_BASE_URL: ${{ vars.EXPO_PUBLIC_API_BASE_URL }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest . --target runner-frontend
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+  deploy:
+    needs: [upload-artifacts]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./IaC
+
+      - name: Set environment
+        id: set-env
+        run: |
+          if [[ "${{ github.base_ref }}" == "main" ]]; then
+            echo "env=prod" >> "$GITHUB_OUTPUT"
+          else
+            echo "env=dev" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Deploy App Runner Services
+        run: terraform apply -var-file="envs/${{ steps.set-env.outputs.env }}/terraform.tfvars" -auto-approve
