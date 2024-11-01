@@ -1,4 +1,4 @@
-FROM node:22-alpine as base
+FROM node:22-alpine AS base
 
 WORKDIR /app
 
@@ -25,3 +25,19 @@ ENV PORT=3000
 EXPOSE 3000
 
 CMD ["node", "main.js"] 
+
+FROM dependencies AS builder-frontend
+
+RUN npx nx export mobile --platform=web
+
+FROM base AS pre-runner-frontend
+COPY --from=builder-frontend /app/apps/mobile/dist .
+COPY --from=builder-frontend /app/apps/mobile/package.json .
+
+FROM nginx:1.27-alpine AS runner-frontend
+COPY --from=pre-runner-frontend /app /usr/share/nginx/html
+COPY ./apps/mobile/nginx/default.conf /etc/nginx/conf.d
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
