@@ -9,6 +9,7 @@ on:
       - 'apps/backend/**'
       - 'libs/api/**'
       - '.github/workflows/**'
+      - 'Dockerfile'
 
 permissions:
   id-token: write
