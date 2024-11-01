@@ -1,5 +1,8 @@
 name: Deploy to Dev
 
+env:
+  NX_NO_CLOUD: true
+
 on:
   push:
     branches:
