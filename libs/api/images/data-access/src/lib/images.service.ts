@@ -33,7 +33,7 @@ export class ImagesService implements IImagesService {
   async getOriginalImages({ lastKey, limit = 12 }: GetOriginalImagesParams) {
     const files = await this.storageService.getAllFiles({
       prefix: this.originalPath + '/',
-      startAfter: this.originalPath + '/' + lastKey,
+      startAfter: lastKey ? this.originalPath + '/' + lastKey : undefined,
       maxKeys: limit,
     });
 

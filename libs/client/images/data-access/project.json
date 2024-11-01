@@ -1,0 +1,9 @@
+{
+  "name": "client-images-data-access",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/client/images/data-access/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project client-images-data-access --web",
+  "targets": {}
+}
