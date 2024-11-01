@@ -12,3 +12,7 @@ tags = {
 container_port    = 8080
 app_runner_cpu    = 1024
 app_runner_memory = 2048
+
+frontend_port            = 80
+frontend_app_runner_cpu  = 1024
+frontend_app_runner_memory = 2048

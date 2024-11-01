@@ -6,6 +6,10 @@ container_port    = 8080
 app_runner_cpu    = 512
 app_runner_memory = 1024
 
+frontend_port            = 80
+frontend_app_runner_cpu  = 512
+frontend_app_runner_memory = 1024
+
 tags = {
   Environment = "Development"
   Owner       = "Alex"

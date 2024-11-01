@@ -47,3 +47,21 @@ variable "app_runner_memory" {
   type        = number
   default     = 2048  // 2 GB
 }
+
+variable "frontend_port" {
+  description = "Port on which the frontend container will listen"
+  type        = number
+  default     = 80  // Default port for nginx serving React app
+}
+
+variable "frontend_app_runner_cpu" {
+  description = "Amount of CPU units for the Frontend App Runner service"
+  type        = number
+  default     = 1024  // 1 vCPU
+}
+
+variable "frontend_app_runner_memory" {
+  description = "Amount of memory (in MB) for the Frontend App Runner service"
+  type        = number
+  default     = 2048  // 2 GB
+}
