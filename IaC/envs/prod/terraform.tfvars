@@ -8,3 +8,6 @@ tags = {
   Purpose     = "PicFit Production"
   Backup      = "Required"
 }
+
+github_org  = "Fenriuz"
+github_repo = "PicFit"

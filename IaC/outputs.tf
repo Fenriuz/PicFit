@@ -23,4 +23,9 @@ output "s3_user_secret_key" {
   description = "The secret key for the IAM user"
   value       = aws_iam_access_key.s3_user_key.secret
   sensitive   = true
+}
+
+output "github_actions_role_arn" {
+  description = "ARN of the IAM role for GitHub Actions"
+  value       = aws_iam_role.github_actions.arn
 } 
