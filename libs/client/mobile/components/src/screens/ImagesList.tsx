@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { View, ActivityIndicator, FlatList, useWindowDimensions, StyleSheet, Animated } from 'react-native';
-import { useImages, useImageUpload } from '@pic-fit/client/images/data-access';
+import { useImageDelete, useImages, useImageUpload } from '@pic-fit/client/images/data-access';
 import { ImageCard } from '../specific/ImageCard';
 import { ErrorView } from '../common/ErrorView';
 import { UploadArea } from '../specific/UploadArea';
@@ -14,6 +14,7 @@ export const ImagesListScreen: React.FC = () => {
   const { data, isLoading, error, isFetchingNextPage, hasNextPage, fetchNextPage } = useImages();
 
   const { mutate: uploadImage, isPending: isUploading } = useImageUpload();
+  const { mutate: deleteImage } = useImageDelete();
 
   const getNumberOfColumns = () => {
     if (width >= 1024) return 4;
@@ -48,7 +49,14 @@ export const ImagesListScreen: React.FC = () => {
       <FlatList
         data={data?.pages.flatMap((page) => page.items)}
         renderItem={({ item, index }) => (
-          <ImageCard image={item} onPress={() => setSelectedImage(item)} index={index} />
+          <ImageCard
+            image={item}
+            onPress={() => setSelectedImage(item)}
+            index={index}
+            onDelete={(key: string) => {
+              deleteImage(key);
+            }}
+          />
         )}
         keyExtractor={(item) => item.key}
         numColumns={getNumberOfColumns()}

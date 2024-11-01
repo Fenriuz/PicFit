@@ -43,4 +43,8 @@ export class ImageService {
 
     return response;
   }
+
+  static async deleteImage(key: string): Promise<Response> {
+    return await fetch(`${API_BASE_URL}/images/${key}`, { method: 'DELETE' });
+  }
 }

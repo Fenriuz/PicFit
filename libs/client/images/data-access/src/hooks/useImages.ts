@@ -35,3 +35,39 @@ export const useImageUpload = () => {
     },
   });
 };
+
+export const useImageDelete = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (key: string) => ImageService.deleteImage(key),
+    onMutate: async (deletedKey) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ['images'] });
+
+      // Get the current query data
+      const previousData = queryClient.getQueryData<InfiniteData<ImagesResponse>>(['images']);
+
+      // Remove the deleted image from the cache and update the rest
+      // don't need to refetch the data, because S3 needs some time to delete the image
+      if (previousData) {
+        queryClient.setQueryData<InfiniteData<ImagesResponse>>(['images'], {
+          ...previousData,
+          pages: previousData.pages.map((page) => ({
+            ...page,
+            items: page.items.filter((item) => item.key !== deletedKey),
+          })),
+        });
+      }
+
+      return { previousData };
+    },
+    onError: (_, __, context) => {
+      console.log('Error', context);
+      // If the mutation fails, restore the previous data
+      if (context?.previousData) {
+        queryClient.setQueryData(['images'], context.previousData);
+      }
+    },
+  });
+};

@@ -5,13 +5,14 @@ import { Image as ImageType } from '@pic-fit/api/shared/types';
 interface ImageCardProps {
   image: ImageType;
   onPress?: () => void;
+  onDelete?: (key: string) => void;
   index: number;
 }
 
 const API_BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL;
 const IMAGE_BASE_URL = `${API_BASE_URL}/images`;
 
-export const ImageCard: React.FC<ImageCardProps> = ({ image, onPress, index }) => {
+export const ImageCard: React.FC<ImageCardProps> = ({ image, onPress, onDelete, index }) => {
   const { width } = useWindowDimensions();
 
   const cardWidth = width / 2 - 16;
@@ -26,6 +27,14 @@ export const ImageCard: React.FC<ImageCardProps> = ({ image, onPress, index }) =
     <Pressable onPress={onPress} style={({ pressed }) => [styles.imageCard, pressed && styles.pressed]}>
       <View style={styles.container}>
         <Image source={{ uri: imageUrl }} style={styles.thumbnail} resizeMode="cover" />
+        {onDelete && (
+          <Pressable
+            onPress={() => onDelete(image.key)}
+            style={({ pressed }) => [styles.deleteButton, pressed && styles.deleteButtonPressed]}
+          >
+            <Text style={styles.deleteButtonText}>×</Text>
+          </Pressable>
+        )}
         <View style={styles.content}>
           <Text style={styles.title} numberOfLines={1}>
             Image {index + 1}
@@ -79,5 +88,27 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 14,
     color: '#666',
+  },
+  deleteButton: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+  },
+  deleteButtonPressed: {
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  },
+  deleteButtonText: {
+    color: '#fff',
+    fontSize: 20,
+    lineHeight: 22,
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });
