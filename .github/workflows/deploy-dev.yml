@@ -78,7 +78,7 @@ jobs:
     needs: [upload-artifacts]
     runs-on: ubuntu-latest
     steps:
-      - uses: ./IaC
+      - uses: actions/checkout@v4
 
       - name: Set environment
         id: set-env
@@ -89,5 +89,21 @@ jobs:
             echo "env=dev" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Deploy App Runner Services
-        run: terraform apply -var-file="envs/${{ steps.set-env.outputs.env }}/terraform.tfvars" -auto-approve
+      - name: Change to IaC directory
+        run: cd IaC
+
+      - name: Terraform Init
+        working-directory: ./IaC
+        run: terraform init
+
+      - name: Terraform Format
+        working-directory: ./IaC
+        run: terraform fmt -check
+
+      - name: Terraform Validate
+        working-directory: ./IaC
+        run: terraform validate
+
+      - name: Terraform Plan
+        working-directory: ./IaC
+        run: terraform plan -var-file="envs/${{ steps.set-env.outputs.env }}/terraform.tfvars" -input=false
