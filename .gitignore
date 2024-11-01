@@ -75,4 +75,3 @@ terraform.rc
 # Environment variables
 .env
 *.env
-
