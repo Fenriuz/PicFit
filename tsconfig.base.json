@@ -20,6 +20,7 @@
       "@pic-fit/api/images/feature": ["libs/api/images/feature/src/index.ts"],
       "@pic-fit/api/shared/services/storage": ["libs/api/shared/services/storage/src/index.ts"],
       "@pic-fit/api/shared/types": ["libs/api/shared/types/src/index.ts"],
+      "@pic-fit/client/images/data-access": ["libs/client/images/data-access/src/index.ts"],
       "@pic-fit/client/mobile/components": ["libs/client/mobile/components/src/index.ts"]
     }
   },

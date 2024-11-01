@@ -1,6 +1,6 @@
 import { InfiniteData, useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ImageService } from '../services/imageService';
-import { Image } from '../types/image';
+import { Image } from '@pic-fit/api/shared/types';
 import { Alert, Platform } from 'react-native';
 
 interface ImagesResponse {

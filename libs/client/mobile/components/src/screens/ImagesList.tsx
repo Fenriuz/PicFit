@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { View, ActivityIndicator, FlatList, useWindowDimensions, StyleSheet, Animated } from 'react-native';
-import { useImages, useImageUpload } from '@pic-fit/client/mobile/hooks';
+import { useImages, useImageUpload } from '@pic-fit/client/images/data-access';
 import { ImageCard } from '../specific/ImageCard';
 import { ErrorView } from '../common/ErrorView';
 import { UploadArea } from '../specific/UploadArea';

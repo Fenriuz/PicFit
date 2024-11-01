@@ -1,5 +1,5 @@
-import { API_BASE_URL } from '../constants/config';
-import { Image } from '../types/image';
+import { API_BASE_URL } from '@pic-fit/client/mobile/utils/constants';
+import { Image } from '@pic-fit/api/shared/types';
 
 interface ImagesResponse {
   items: Image[];
