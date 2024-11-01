@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - IaC
     paths:
       - 'apps/backend/**'
       - 'apps/mobile/**'
