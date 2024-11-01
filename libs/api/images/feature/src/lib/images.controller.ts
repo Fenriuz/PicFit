@@ -28,7 +28,7 @@ export class ImagesController {
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({
-            maxSize: 0.2 * 1024 * 1024, // 200KB in bytes
+            maxSize: 5 * 1024 * 1024, // MB
             message: (maxSize) => `File size is too large. Max size is ${maxSize / 1024 / 1024} MB`,
           }),
           new FileTypeValidator({
@@ -71,7 +71,7 @@ export class ImagesController {
   }
 
   @Delete(':key')
-  deleteImage(@Param('key') key: string) {
-    this.imageService.deleteImage({ key });
+  async deleteImage(@Param('key') key: string) {
+    await this.imageService.deleteImage({ key });
   }
 }
