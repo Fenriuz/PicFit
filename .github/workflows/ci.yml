@@ -1,4 +1,7 @@
 name: Test Dev
+env:
+  NX_NO_CLOUD: true
+
 
 on:
   pull_request:

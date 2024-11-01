@@ -65,3 +65,15 @@ variable "frontend_app_runner_memory" {
   type        = number
   default     = 2048  // 2 GB
 }
+
+variable "cors_allowed_origins" {
+  description = "List of allowed origins for CORS"
+  type        = list(string)
+  default     = []
+}
+
+variable "cors_allowed_methods" {
+  description = "List of allowed HTTP methods for CORS"
+  type        = list(string)
+  default     = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+}

@@ -16,3 +16,8 @@ app_runner_memory = 2048
 frontend_port            = 80
 frontend_app_runner_cpu  = 1024
 frontend_app_runner_memory = 2048
+
+cors_allowed_origins = [
+  "https://*.picfit.app",
+  "picfit://*"
+]

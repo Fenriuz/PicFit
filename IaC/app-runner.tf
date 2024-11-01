@@ -38,6 +38,11 @@ resource "aws_apprunner_service" "service" {
           AWS_REGION = var.aws_region
           AWS_ACCESS_KEY_ID = aws_iam_access_key.s3_user_key.id
           AWS_SECRET_ACCESS_KEY = aws_iam_access_key.s3_user_key.secret
+          CORS_ALLOWED_ORIGINS = join(",", concat(
+            var.cors_allowed_origins,
+            [aws_apprunner_service.frontend_service.service_url]
+          ))
+          CORS_ALLOWED_METHODS = join(",", var.cors_allowed_methods)
         }
       }
       image_identifier      = "${data.aws_ecr_repository.app.repository_url}:latest"

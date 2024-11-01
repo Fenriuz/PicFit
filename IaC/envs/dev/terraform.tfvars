@@ -15,3 +15,10 @@ tags = {
   Owner       = "Alex"
   Purpose     = "PicFit Development"
 }
+
+cors_allowed_origins = [
+  "http://localhost:3000",
+  "http://localhost:19006",
+  "exp://localhost:19000",
+  "exp://192.168.1.*:19000"
+]
