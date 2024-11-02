@@ -106,9 +106,9 @@ jobs:
 
       - name: Add profile credentials to ~/.aws/credentials
         run: |
-          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} --profile default
-          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} --profile default
-          export AWS_PROFILE=default
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} --profile terraform-personal-test
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} --profile terraform-personal-test
+          export AWS_PROFILE=terraform-personal-test
 
       - name: Terraform Init
         working-directory: ./IaC
