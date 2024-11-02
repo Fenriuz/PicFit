@@ -1,0 +1,7 @@
+{
+  "{apps,libs}/**/*.{js,jsx,ts,tsx}": [
+    "prettier --write --ignore-unknown",
+    "eslint --fix"
+  ],
+  "IaC/**/*.tf": ["terraform fmt"]
+}
