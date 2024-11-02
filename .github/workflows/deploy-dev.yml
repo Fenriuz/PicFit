@@ -116,4 +116,4 @@ jobs:
 
       - name: Terraform Apply
         working-directory: ./IaC
-        run: terraform apply -var-file="envs/${{ steps.set-env.outputs.env }}/terraform.tfvars" -input=false
+        run: terraform apply -var-file="envs/${{ steps.set-env.outputs.env }}/terraform.tfvars"  -auto-approve -input=false
