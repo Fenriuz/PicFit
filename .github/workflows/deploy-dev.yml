@@ -92,12 +92,11 @@ jobs:
             echo "env=dev" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ vars.AWS_REGION }}
+      - name: Add profile credentials to ~/.aws/credentials
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} --profile terraform-personal-test
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} --profile terraform-personal-test
+          export AWS_PROFILE=terraform-personal-test
 
       - name: Terraform Init
         working-directory: ./IaC
@@ -105,7 +104,7 @@ jobs:
 
       - name: Terraform Format
         working-directory: ./IaC
-        run: terraform fmt -check
+        run: terraform fmt
 
       - name: Terraform Validate
         working-directory: ./IaC

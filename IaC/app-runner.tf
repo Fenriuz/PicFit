@@ -33,11 +33,11 @@ resource "aws_apprunner_service" "service" {
       image_configuration {
         port = var.container_port
         runtime_environment_variables = {
-          ENVIRONMENT = var.environment
+          ENVIRONMENT            = var.environment
           AWS_IMAGES_BUCKET_NAME = aws_s3_bucket.image_bucket.id
-          AWS_REGION = var.aws_region
-          AWS_ACCESS_KEY_ID = aws_iam_access_key.s3_user_key.id
-          AWS_SECRET_ACCESS_KEY = aws_iam_access_key.s3_user_key.secret
+          AWS_REGION             = var.aws_region
+          AWS_ACCESS_KEY_ID      = aws_iam_access_key.s3_user_key.id
+          AWS_SECRET_ACCESS_KEY  = aws_iam_access_key.s3_user_key.secret
           CORS_ALLOWED_ORIGINS = join(",", concat(
             var.cors_allowed_origins,
             [aws_apprunner_service.frontend_service.service_url]
