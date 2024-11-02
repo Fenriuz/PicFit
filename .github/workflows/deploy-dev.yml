@@ -113,3 +113,7 @@ jobs:
       - name: Terraform Plan
         working-directory: ./IaC
         run: terraform plan -var-file="envs/${{ steps.set-env.outputs.env }}/terraform.tfvars" -input=false
+
+      - name: Terraform Apply
+        working-directory: ./IaC
+        run: terraform apply -var-file="envs/${{ steps.set-env.outputs.env }}/terraform.tfvars" -input=false
