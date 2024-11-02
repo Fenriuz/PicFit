@@ -9,15 +9,9 @@
     "react-native": "*",
     "expo": "*",
     "react-native-svg": "*",
-    "react-native-web": "*",
-    "expo-image-picker": "*",
-    "expo-image": "*",
-    "react": "18.2.0"
+    "react-native-web": "*"
   },
   "scripts": {
-    "eas-build-post-install": "cd ../../ && node tools/scripts/eas-build-post-install.mjs . apps/mobile",
-    "android": "expo run:android",
-    "ios": "expo run:ios"
-  },
-  "devDependencies": {}
+    "eas-build-post-install": "cd ../../ && node tools/scripts/eas-build-post-install.mjs . apps/mobile"
+  }
 }

@@ -14,44 +14,19 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
-    "build": {
-      "preview": {
-        "android": {
-          "buildType": "apk"
-        }
-      }
-    },
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.picfit.mobile",
-      "infoPlist": {
-        "NSPhotoLibraryUsageDescription": "The app needs access to your photos."
-      }
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      },
-      "permissions": [],
-      "package": "com.picfit.mobile"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
-    "plugins": [
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "The app needs access to your photos."
-        }
-      ]
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "652d8fee-e46a-41de-9a25-4cd6889c414f"
-      }
-    }
+    "plugins": []
   }
 }
