@@ -55,26 +55,4 @@ npm-debug.*
 *.orig.*
 web-build/
 cache/
-android/
-ios/
 
-# Terraform
-**/.terraform/*
-*.tfstate
-*.tfstate.*
-crash.log
-crash.*.log
-*.tfvars
-*.tfvars.json
-!terraform.tfvars
-override.tf
-override.tf.json
-*_override.tf
-*_override.tf.json
-.terraformrc
-terraform.rc
-.terraform.lock.hcl
-
-# Environment variables
-.env
-*.env

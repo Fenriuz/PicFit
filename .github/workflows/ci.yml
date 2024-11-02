@@ -1,127 +1,41 @@
-name: Test Dev
-env:
-  NX_NO_CLOUD: true
+name: CI
 
 on:
-  pull_request:
+  push:
     branches:
-      - develop
       - main
-    paths:
-      - 'apps/**'
-      - 'libs/**'
-      - 'package.json'
-      - 'package-lock.json'
-      - '.github/workflows/**'
-      - 'IaC/**'
+  pull_request:
 
 permissions:
   actions: read
   contents: read
-  checks: write
-  pull-requests: write
 
 jobs:
-  set-environment:
-    runs-on: ubuntu-latest
-    outputs:
-      env: ${{ steps.set-env.outputs.env }}
-    steps:
-      - name: Set environment
-        id: set-env
-        run: |
-          if [[ "${{ github.base_ref }}" == "main" ]]; then
-            echo "env=prod" >> "$GITHUB_OUTPUT"
-          else
-            echo "env=dev" >> "$GITHUB_OUTPUT"
-          fi
-
-  lint-test:
-    needs: set-environment
+  main:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      # This enables task distribution via Nx Cloud
+      # Run this command as early as possible, before dependencies are installed
+      # Learn more at https://nx.dev/ci/reference/nx-cloud-cli#npx-nxcloud-startcirun
+      # Uncomment this line to enable task distribution
+      # - run: npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="e2e-ci"
+
+      # Cache node_modules
+      - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20
           cache: 'npm'
 
-      - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+      - run: npm ci --legacy-peer-deps
+      - run: npx playwright install
+      - uses: nrwl/nx-set-shas@v4
 
-      - name: Lint
-        run: npx nx affected -t lint --base=origin/${{ github.base_ref }}
-
-      - name: Test
-        run: |
-          npx nx affected -t test --base=origin/${{ github.base_ref }} --configuration=ci --coverage
-
-      # - name: Upload coverage reports
-      #   uses: codecov/codecov-action@v4
-      #   with:
-      #     token: ${{ secrets.CODECOV_TOKEN }}
-      #     files: ./coverage/apps/backend/lcov.info,./coverage/libs/api/*/lcov.info
-      #     flags: backend
-      #     fail_ci_if_error: true
-
-  build:
-    needs: [set-environment, lint-test]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci --legacy-peer-deps
-
-      - name: Build web app
-        run: npx nx affected --base=origin/${{ github.base_ref }} -t export mobile -p web
-
-      - name: Build backend
-        run: npx nx affected --base=origin/${{ github.base_ref }} -t build --exclude=mobile
-
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: backend-dist
-          path: dist/apps/backend
-          if-no-files-found: ignore
-
-  IaC:
-    needs: [set-environment, build]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Add profile credentials to ~/.aws/credentials
-        run: |
-          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} --profile terraform-personal-test
-          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} --profile terraform-personal-test
-          export AWS_PROFILE=terraform-personal-test
-
-      - name: Terraform Init
-        working-directory: ./IaC
-        run: terraform init
-
-      - name: Terraform Format
-        working-directory: ./IaC
-        run: terraform fmt -check
-
-      - name: Terraform Validate
-        working-directory: ./IaC
-        run: terraform validate
-
-      - name: Terraform Plan
-        working-directory: ./IaC
-        run: terraform plan -var-file="envs/${{ needs.set-environment.outputs.env }}/terraform.tfvars" -input=false
+      # Prepend any command with "nx-cloud record --" to record its logs to Nx Cloud
+      # - run: npx nx-cloud record -- echo Hello World
+      # Nx Affected runs only tasks affected by the changes in this PR/commit. Learn more: https://nx.dev/ci/features/affected
+      # When you enable task distribution, run the e2e-ci task instead of e2e
+      - run: npx nx affected -t lint test build e2e
