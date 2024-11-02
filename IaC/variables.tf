@@ -33,37 +33,37 @@ variable "aws_profile" {
 variable "container_port" {
   description = "Port on which the container will listen"
   type        = number
-  default     = 8080  // Adjust default value based on your application needs
+  default     = 8080 // Adjust default value based on your application needs
 }
 
 variable "app_runner_cpu" {
   description = "Amount of CPU units for the App Runner service"
   type        = number
-  default     = 1024  // 1 vCPU
+  default     = 1024 // 1 vCPU
 }
 
 variable "app_runner_memory" {
   description = "Amount of memory (in MB) for the App Runner service"
   type        = number
-  default     = 2048  // 2 GB
+  default     = 2048 // 2 GB
 }
 
 variable "frontend_port" {
   description = "Port on which the frontend container will listen"
   type        = number
-  default     = 80  // Default port for nginx serving React app
+  default     = 80 // Default port for nginx serving React app
 }
 
 variable "frontend_app_runner_cpu" {
   description = "Amount of CPU units for the Frontend App Runner service"
   type        = number
-  default     = 1024  // 1 vCPU
+  default     = 1024 // 1 vCPU
 }
 
 variable "frontend_app_runner_memory" {
   description = "Amount of memory (in MB) for the Frontend App Runner service"
   type        = number
-  default     = 2048  // 2 GB
+  default     = 2048 // 2 GB
 }
 
 variable "cors_allowed_origins" {

@@ -33,7 +33,7 @@ resource "aws_apprunner_service" "frontend_service" {
       image_configuration {
         port = var.frontend_port
         runtime_environment_variables = {
-          REACT_APP_ENVIRONMENT = var.environment
+          REACT_APP_ENVIRONMENT    = var.environment
           EXPO_PUBLIC_API_BASE_URL = aws_apprunner_service.service.service_url
         }
       }
