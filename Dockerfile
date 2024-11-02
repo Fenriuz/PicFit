@@ -27,6 +27,8 @@ EXPOSE 3000
 CMD ["node", "main.js"] 
 
 FROM dependencies AS builder-frontend
+ARG EXPO_PUBLIC_API_BASE_URL
+ENV EXPO_PUBLIC_API_BASE_URL=$EXPO_PUBLIC_API_BASE_URL
 
 RUN npx nx export mobile --platform=web
 

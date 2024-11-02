@@ -1,9 +1,13 @@
 name: Deploy to Dev
 
+env:
+  NX_NO_CLOUD: true
+
 on:
   push:
     branches:
       - develop
+      - main
     paths:
       - 'apps/backend/**'
       - 'apps/mobile/**'
@@ -36,7 +40,8 @@ jobs:
         run: |
           npx nx run-many -t test --configuration=ci --coverage
 
-  deploy:
+  upload-artifacts:
+    needs: [test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -66,7 +71,45 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY_FRONTEND }}
           IMAGE_TAG: ${{ github.sha }}
+          EXPO_PUBLIC_API_BASE_URL: ${{ vars.EXPO_PUBLIC_API_BASE_URL }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest . --target runner-frontend
+          docker build --build-arg EXPO_PUBLIC_API_BASE_URL=$EXPO_PUBLIC_API_BASE_URL -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest . --target runner-frontend
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+  deploy:
+    needs: [upload-artifacts]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set environment
+        id: set-env
+        run: |
+          if [[ "${{ github.base_ref }}" == "main" ]]; then
+            echo "env=prod" >> "$GITHUB_OUTPUT"
+          else
+            echo "env=dev" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Add profile credentials to ~/.aws/credentials
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} --profile terraform-personal-test
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} --profile terraform-personal-test
+          export AWS_PROFILE=terraform-personal-test
+
+      - name: Terraform Init
+        working-directory: ./IaC
+        run: terraform init
+
+      - name: Terraform Format
+        working-directory: ./IaC
+        run: terraform fmt
+
+      - name: Terraform Validate
+        working-directory: ./IaC
+        run: terraform validate
+
+      - name: Terraform Plan
+        working-directory: ./IaC
+        run: terraform plan -var-file="envs/${{ steps.set-env.outputs.env }}/terraform.tfvars" -input=false
